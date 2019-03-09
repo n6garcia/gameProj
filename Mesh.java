@@ -3,6 +3,12 @@ import java.util.LinkedList;
 public class Mesh{
     LinkedList<Triangle> tris = new LinkedList<Triangle>();
 
+    public Mesh(LinkedList<Triangle> tris){
+        this.tris = tris;
+    }
+
+    public Mesh() {}
+
     @Override
     public String toString() {
         String str = "";

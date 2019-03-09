@@ -38,8 +38,12 @@ public class ShapeProj{
     public void getCube(){
 
         Mat4x4 matProj = getMatProj();
-        Mesh meshCube = new Mesh();
 
+        Model md = new Model("resources/VideoShip.obj");
+        Mesh meshCube = md.getMesh();
+
+
+        /*
         Triangle s1 = new Triangle(new Vec3d(0.0f, 0.0f, 0.0f), new Vec3d(0.0f, 1.0f, 0.0f), new Vec3d(1.0f, 1.0f, 0.0f));
         Triangle s2 = new Triangle(new Vec3d(0.0f, 0.0f, 0.0f), new Vec3d(1.0f, 1.0f, 0.0f), new Vec3d(1.0f, 0.0f, 0.0f));
 
@@ -70,6 +74,7 @@ public class ShapeProj{
         meshCube.tris.add(t2);
         meshCube.tris.add(b1);
         meshCube.tris.add(b2);
+        */
 
         this.mesh = meshCube;
 
@@ -82,9 +87,9 @@ public class ShapeProj{
             tri = meshCube.tris.get(i);
 
             // Offset into the screen
-            triTranslated.p[0].z = tri.p[0].z + 3.0f;
-            triTranslated.p[1].z = tri.p[1].z + 3.0f;
-            triTranslated.p[2].z = tri.p[2].z + 3.0f;
+            triTranslated.p[0].z = tri.p[0].z + 8.0f;
+            triTranslated.p[1].z = tri.p[1].z + 8.0f;
+            triTranslated.p[2].z = tri.p[2].z + 8.0f;
 
             // Project Triangles from 3D --> 2D
             MultiplyMatrixVector(triTranslated.p[0], triProjected.p[0], matProj);
@@ -165,9 +170,9 @@ public class ShapeProj{
 
             // Offset into the screen
             triTranslated = triRotatedZX;
-            triTranslated.p[0].z = triRotatedZX.p[0].z + 4.0f;
-            triTranslated.p[1].z = triRotatedZX.p[1].z + 4.0f;
-            triTranslated.p[2].z = triRotatedZX.p[2].z + 4.0f;
+            triTranslated.p[0].z = triRotatedZX.p[0].z + 8.0f;
+            triTranslated.p[1].z = triRotatedZX.p[1].z + 8.0f;
+            triTranslated.p[2].z = triRotatedZX.p[2].z + 8.0f;
 
 
 

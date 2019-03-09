@@ -2,6 +2,8 @@ import java.lang.Math;
 
 public class Vec3d{
     float x,y,z;
+    float w = 1;
+
     public Vec3d(float x, float y, float z){
         this.x = x;
         this.y = y;
@@ -14,16 +16,16 @@ public class Vec3d{
         this.z = 0.0f;
     }
 
-    public Vec3d Vector_Normalise(Vec3d v) {
+    public static Vec3d Vector_Normalise(Vec3d v) {
         float l = Vector_Length(v);
         return new Vec3d(v.x / l, v.y / l, v.z / l );
     }
 
-    public float Vector_Length(Vec3d v) {
+    public static float Vector_Length(Vec3d v) {
         return (float)Math.sqrt(Vector_DotProduct(v, v));
     }
 
-    Vec3d Vector_CrossProduct(Vec3d v1, Vec3d v2) {
+    public static Vec3d Vector_CrossProduct(Vec3d v1, Vec3d v2) {
         Vec3d v = new Vec3d();
         v.x = v1.y * v2.z - v1.z * v2.y;
         v.y = v1.z * v2.x - v1.x * v2.z;
