@@ -20,6 +20,7 @@ public class Player extends GameObject{
     private static final int speed = 3;
 
   public void tick(){
+    /*
     velX = right + left;
     velY = up + down;
 
@@ -29,29 +30,32 @@ public class Player extends GameObject{
     } else {
       velX = velX * speed;
       velY = velY * speed;
-    }
+    } */
 
     fTheta+= 0.01f;
 
     Platform.runLater(() -> {
-        //sp.move(velX,velY);
         sp.rotate(fTheta);
     });
 
   }
 
   public void keyPressed(KeyCode key){
+      /*
     if(key == KeyCode.UP) up = 1;
     if(key == KeyCode.DOWN) down = -1;
     if(key == KeyCode.RIGHT) right = 1;
     if(key == KeyCode.LEFT) left = -1;
+    */
   }
 
   public void keyReleased(KeyCode key){
+      /*
     if(key == KeyCode.UP) up = 0;
     if(key == KeyCode.DOWN) down = 0;
     if(key == KeyCode.RIGHT) right = 0;
     if(key == KeyCode.LEFT) left = 0;
+    */
   }
 
   public void render(){}

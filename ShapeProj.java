@@ -11,19 +11,28 @@ public class ShapeProj{
     Game game;
     public LinkedList<Polygon> polygons = new LinkedList<Polygon>();
     public Mesh mesh;
+    Mat4x4 matProj = new Mat4x4();
+
+    Mat4x4 matRotZ = new Mat4x4();
+    Mat4x4 matRotX = new Mat4x4();
+
+    Triangle triProjected = new Triangle();
+    Triangle triTranslated = new Triangle();
+    Triangle triRotatedZ= new Triangle();
+    Triangle triRotatedZX = new Triangle();
+
+    Vec3d normal = new Vec3d();
+    Vec3d line1 = new Vec3d();
+    Vec3d line2 = new Vec3d();
 
     public ShapeProj(Game game){
         this.game = game;
-    }
 
-    public Mat4x4 getMatProj(){
         float fNear = 0.1f;
         float fFar = 1000.0f;
         float fFov = 90.0f;
         float fAspectRatio = (float)game.scene.getWidth() / (float)game.scene.getWidth();
         float fFovRad = 1.0f / (float)Math.tan(fFov * 0.5f / 180.0f * 3.14159f);
-
-        Mat4x4 matProj = new Mat4x4();
 
         matProj.m[0][0] = fAspectRatio * fFovRad;
         matProj.m[1][1] = fFovRad;
@@ -32,57 +41,17 @@ public class ShapeProj{
         matProj.m[2][3] = 1.0f;
         matProj.m[3][3] = 0.0f;
 
-        return matProj;
     }
 
     public void getCube(){
 
-        Mat4x4 matProj = getMatProj();
-
         Model md = new Model("resources/VideoShip.obj");
         Mesh meshCube = md.getMesh();
-
-
-        /*
-        Triangle s1 = new Triangle(new Vec3d(0.0f, 0.0f, 0.0f), new Vec3d(0.0f, 1.0f, 0.0f), new Vec3d(1.0f, 1.0f, 0.0f));
-        Triangle s2 = new Triangle(new Vec3d(0.0f, 0.0f, 0.0f), new Vec3d(1.0f, 1.0f, 0.0f), new Vec3d(1.0f, 0.0f, 0.0f));
-
-        Triangle e1 = new Triangle(new Vec3d(1.0f, 0.0f, 0.0f), new Vec3d(1.0f, 1.0f, 0.0f), new Vec3d(1.0f, 1.0f, 1.0f));
-        Triangle e2 = new Triangle(new Vec3d(1.0f, 0.0f, 0.0f), new Vec3d(1.0f, 1.0f, 1.0f), new Vec3d(1.0f, 0.0f, 1.0f));
-
-        Triangle n1 = new Triangle(new Vec3d(1.0f, 0.0f, 1.0f), new Vec3d(1.0f, 1.0f, 1.0f), new Vec3d(0.0f, 1.0f, 1.0f));
-        Triangle n2 = new Triangle(new Vec3d(1.0f, 0.0f, 1.0f), new Vec3d(0.0f, 1.0f, 1.0f), new Vec3d(0.0f, 0.0f, 1.0f));
-
-        Triangle w1 = new Triangle(new Vec3d(0.0f, 0.0f, 1.0f), new Vec3d(0.0f, 1.0f, 1.0f), new Vec3d(0.0f, 1.0f, 0.0f));
-        Triangle w2 = new Triangle(new Vec3d(0.0f, 0.0f, 1.0f), new Vec3d(0.0f, 1.0f, 0.0f), new Vec3d(0.0f, 0.0f, 0.0f));
-
-        Triangle t1 = new Triangle(new Vec3d(0.0f, 1.0f, 0.0f), new Vec3d(0.0f, 1.0f, 1.0f), new Vec3d(1.0f, 1.0f, 1.0f));
-        Triangle t2 = new Triangle(new Vec3d(0.0f, 1.0f, 0.0f), new Vec3d(1.0f, 1.0f, 1.0f), new Vec3d(1.0f, 1.0f, 0.0f));
-
-        Triangle b1 = new Triangle(new Vec3d(1.0f, 0.0f, 1.0f), new Vec3d(0.0f, 0.0f, 1.0f), new Vec3d(0.0f, 0.0f, 0.0f));
-        Triangle b2 = new Triangle(new Vec3d(1.0f, 0.0f, 1.0f), new Vec3d(0.0f, 0.0f, 0.0f), new Vec3d(1.0f, 0.0f, 0.0f));
-
-        meshCube.tris.add(s1);
-        meshCube.tris.add(s2);
-        meshCube.tris.add(e1);
-        meshCube.tris.add(e2);
-        meshCube.tris.add(n1);
-        meshCube.tris.add(n2);
-        meshCube.tris.add(w1);
-        meshCube.tris.add(w2);
-        meshCube.tris.add(t1);
-        meshCube.tris.add(t2);
-        meshCube.tris.add(b1);
-        meshCube.tris.add(b2);
-        */
 
         this.mesh = meshCube;
 
         Triangle tri;
         for (int i =0; i < meshCube.tris.size(); i++) {
-
-            Triangle triProjected = new Triangle();
-            Triangle triTranslated = new Triangle();
 
             tri = meshCube.tris.get(i);
 
@@ -114,7 +83,7 @@ public class ShapeProj{
                 (double)triProjected.p[2].x, (double)triProjected.p[2].y });
 
             polygon.setStroke(Color.RED);
-            polygon.setFill(Color.TRANSPARENT);
+            polygon.setFill(Color.WHITE);
 
             polygons.add(polygon);
 
@@ -125,12 +94,6 @@ public class ShapeProj{
     }
 
     public void rotate(float fTheta){
-
-        Mat4x4 matProj = getMatProj();
-
-        // Set up rotation matrices
-        Mat4x4 matRotZ = new Mat4x4();
-        Mat4x4 matRotX = new Mat4x4();
 
         // Rotation Z
         matRotZ.m[0][0] = (float)Math.cos(fTheta);
@@ -151,11 +114,6 @@ public class ShapeProj{
         Triangle tri;
         for (int i =0; i < mesh.tris.size(); i++) {
 
-            Triangle triProjected = new Triangle();
-            Triangle triTranslated = new Triangle();
-            Triangle triRotatedZ= new Triangle();
-            Triangle triRotatedZX = new Triangle();
-
             tri = mesh.tris.get(i);
 
             // Rotate in Z-Axis
@@ -175,11 +133,7 @@ public class ShapeProj{
             triTranslated.p[2].z = triRotatedZX.p[2].z + 8.0f;
 
 
-
             // Use Cross-Product to get surface normal
-            Vec3d normal = new Vec3d();
-            Vec3d line1 = new Vec3d();
-            Vec3d line2 = new Vec3d();
             line1.x = triTranslated.p[1].x - triTranslated.p[0].x;
             line1.y = triTranslated.p[1].y - triTranslated.p[0].y;
             line1.z = triTranslated.p[1].z - triTranslated.p[0].z;
@@ -198,12 +152,12 @@ public class ShapeProj{
 
             Polygon polygon = polygons.get(i);
 
-
             if(normal.x * (triTranslated.p[0].x - vCamera.x) +
                normal.y * (triTranslated.p[0].y - vCamera.y) +
                normal.z * (triTranslated.p[0].z - vCamera.z) > 0.0f)
             {
                 polygon.setStroke(Color.TRANSPARENT);
+                polygon.setFill(Color.TRANSPARENT);
             } else {
                 // Project triangles from 3D --> 2D
                 MultiplyMatrixVector(triTranslated.p[0], triProjected.p[0], matProj);
@@ -222,6 +176,7 @@ public class ShapeProj{
                 triProjected.p[2].y *= 0.5f * (float)game.scene.getHeight();
 
                 polygon.setStroke(Color.RED);
+                polygon.setFill(Color.WHITE);
 
                 polygon.getPoints().setAll(new Double[]{
                     (double)triProjected.p[0].x, (double)triProjected.p[0].y,
@@ -229,18 +184,8 @@ public class ShapeProj{
                     (double)triProjected.p[2].x, (double)triProjected.p[2].y });
             }
 
-            //System.out.println(triProjected);
-
         }
 
-        //System.out.println(" ");
-    }
-
-    public void move(int x, int y){
-        vCamera.x +=x;
-        vCamera.y +=y;
-
-        System.out.println(vCamera.x + " " + vCamera.y + " " + vCamera.z);
     }
 
     public static void MultiplyMatrixVector(Vec3d i, Vec3d o, Mat4x4 m) {
@@ -255,5 +200,39 @@ public class ShapeProj{
         }
     }
 
-
 }
+
+
+
+/*
+Triangle s1 = new Triangle(new Vec3d(0.0f, 0.0f, 0.0f), new Vec3d(0.0f, 1.0f, 0.0f), new Vec3d(1.0f, 1.0f, 0.0f));
+Triangle s2 = new Triangle(new Vec3d(0.0f, 0.0f, 0.0f), new Vec3d(1.0f, 1.0f, 0.0f), new Vec3d(1.0f, 0.0f, 0.0f));
+
+Triangle e1 = new Triangle(new Vec3d(1.0f, 0.0f, 0.0f), new Vec3d(1.0f, 1.0f, 0.0f), new Vec3d(1.0f, 1.0f, 1.0f));
+Triangle e2 = new Triangle(new Vec3d(1.0f, 0.0f, 0.0f), new Vec3d(1.0f, 1.0f, 1.0f), new Vec3d(1.0f, 0.0f, 1.0f));
+
+Triangle n1 = new Triangle(new Vec3d(1.0f, 0.0f, 1.0f), new Vec3d(1.0f, 1.0f, 1.0f), new Vec3d(0.0f, 1.0f, 1.0f));
+Triangle n2 = new Triangle(new Vec3d(1.0f, 0.0f, 1.0f), new Vec3d(0.0f, 1.0f, 1.0f), new Vec3d(0.0f, 0.0f, 1.0f));
+
+Triangle w1 = new Triangle(new Vec3d(0.0f, 0.0f, 1.0f), new Vec3d(0.0f, 1.0f, 1.0f), new Vec3d(0.0f, 1.0f, 0.0f));
+Triangle w2 = new Triangle(new Vec3d(0.0f, 0.0f, 1.0f), new Vec3d(0.0f, 1.0f, 0.0f), new Vec3d(0.0f, 0.0f, 0.0f));
+
+Triangle t1 = new Triangle(new Vec3d(0.0f, 1.0f, 0.0f), new Vec3d(0.0f, 1.0f, 1.0f), new Vec3d(1.0f, 1.0f, 1.0f));
+Triangle t2 = new Triangle(new Vec3d(0.0f, 1.0f, 0.0f), new Vec3d(1.0f, 1.0f, 1.0f), new Vec3d(1.0f, 1.0f, 0.0f));
+
+Triangle b1 = new Triangle(new Vec3d(1.0f, 0.0f, 1.0f), new Vec3d(0.0f, 0.0f, 1.0f), new Vec3d(0.0f, 0.0f, 0.0f));
+Triangle b2 = new Triangle(new Vec3d(1.0f, 0.0f, 1.0f), new Vec3d(0.0f, 0.0f, 0.0f), new Vec3d(1.0f, 0.0f, 0.0f));
+
+meshCube.tris.add(s1);
+meshCube.tris.add(s2);
+meshCube.tris.add(e1);
+meshCube.tris.add(e2);
+meshCube.tris.add(n1);
+meshCube.tris.add(n2);
+meshCube.tris.add(w1);
+meshCube.tris.add(w2);
+meshCube.tris.add(t1);
+meshCube.tris.add(t2);
+meshCube.tris.add(b1);
+meshCube.tris.add(b2);
+*/
