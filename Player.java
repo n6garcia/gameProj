@@ -8,9 +8,9 @@ public class Player extends GameObject{
   public Player(int x, int y, int z, ID id, GameThread game){
     super(x, y, z, id, game);
 
-    ShapeProj sp = new ShapeProj(game.game);
-    sp.getCube();
-    this.sp = sp;
+    //ShapeProj sp = new ShapeProj(game.game);
+    //sp.getCube();
+    //this.sp = sp;
 
   }
 
@@ -34,10 +34,11 @@ public class Player extends GameObject{
 
     fTheta+= 0.01f;
 
+    /*
     Platform.runLater(() -> {
         sp.rotate(fTheta);
     });
-
+    */
   }
 
   public void keyPressed(KeyCode key){

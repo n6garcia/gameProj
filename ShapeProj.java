@@ -8,7 +8,7 @@ import java.lang.Math;
 public class ShapeProj{
 
     Vec3d vCamera = new Vec3d();
-    Game game;
+    //Game game;
     public LinkedList<Polygon> polygons = new LinkedList<Polygon>();
     public Mesh mesh;
     Mat4x4 matProj = new Mat4x4();
@@ -25,6 +25,7 @@ public class ShapeProj{
     Vec3d line1 = new Vec3d();
     Vec3d line2 = new Vec3d();
 
+    /*
     public ShapeProj(Game game){
         this.game = game;
 
@@ -187,6 +188,7 @@ public class ShapeProj{
         }
 
     }
+        */
 
     public static void MultiplyMatrixVector(Vec3d i, Vec3d o, Mat4x4 m) {
         o.x = i.x * m.m[0][0] + i.y * m.m[1][0] + i.z * m.m[2][0] + m.m[3][0];
@@ -199,6 +201,7 @@ public class ShapeProj{
             o.x /= w; o.y /= w; o.z /= w;
         }
     }
+
 
 }
 

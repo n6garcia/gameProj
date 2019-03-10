@@ -17,10 +17,10 @@ public class GameThread extends Thread{
 
     public Handler handler;
     private boolean running = true;
-    Game game;
+    //Game game;
 
-    public GameThread(Game game){
-        this.game = game;
+    public GameThread(/*Game game*/){
+        //this.game = game;
         handler = new Handler();
         handler.addObject(new Player(100,100,100, ID.Player, this));
     }
